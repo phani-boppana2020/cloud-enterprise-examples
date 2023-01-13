@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test
+  name: iks-vpc
   labels:
-    app: test
+    app: iks-vpc
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test
+      app: iks-vpc
   template:
     metadata:
       labels:
-        app: test
+        app: iks-vpc
     spec:
       containers:
-        - name: test
-          image: IMAGE
+        - name: iks-vpc
+          image: uk.icr.io/logdna-poc/iks-vpc:latest
           resources:
             requests:
               memory: "320Mi"
@@ -30,30 +30,30 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test
+  name: iks-vpc
   labels:
-    app: test
+    app: iks-vpc
 spec:
   ports:
     - port: 9080
   type: ClusterIP
   selector:
-    app: test
+    app: iks-vpc
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: test
+  name: iks-vpc
 spec:
   tls:
     - hosts:
         - HOST
-      secretName: SECRET 
+      secretName: cfs-logdna-mule-0bbc0fd82a5c7a8402ba5d809e331a82-0000 
   rules:
-    - host: HOST
+    - host: cfs-logdna-mule-0bbc0fd82a5c7a8402ba5d809e331a82-0000.eu-gb.containers.appdomain.cloud
       http:
         paths:
           - path: /autoscale-webapp
             backend:
-              serviceName: test
+              serviceName: iks-vpc
               servicePort: 9080
