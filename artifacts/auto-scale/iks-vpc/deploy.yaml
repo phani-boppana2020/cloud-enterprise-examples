@@ -44,16 +44,19 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: iks-vpc
+  annotations:
+    kubernetes.io/ingress.class: "public-iks-k8s-nginx"
 spec:
   tls:
-    - hosts:
-        - HOST
-      secretName: cfs-logdna-mule-0bbc0fd82a5c7a8402ba5d809e331a82-0000 
+  - hosts:
+    - HOSTNAME
+    secretName: cfs-logdna-mule-0bbc0fd82a5c7a8402ba5d809e331a82-0000 
   rules:
-    - host: cfs-logdna-mule-0bbc0fd82a5c7a8402ba5d809e331a82-0000.eu-gb.containers.appdomain.cloud
-      http:
-        paths:
-          - path: /autoscale-webapp
+  - host: cfs-logdna-mule-0bbc0fd82a5c7a8402ba5d809e331a82-0000.eu-gb.containers.appdomain.cloud
+    http:
+      paths:
+      - path: /autoscale-webapp
             backend:
               serviceName: iks-vpc
               servicePort: 9080
+        
